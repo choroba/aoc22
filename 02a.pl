@@ -5,7 +5,7 @@ use feature qw{ say };
 
 use ARGV::OrDATA;
 
-my %score = (
+my %scores = (
     ROCK     => 1,
     PAPER    => 2,
     SCISSORS => 3,
@@ -33,8 +33,8 @@ my %decode = (
 my $score = 0;
 while (<>) {
     my ($elf, $me) = split;
-    $score += $score{ $decode{$me} }
-           + $score{ $result{ $decode{$elf} }{ $decode{$me} } };
+    $score += $scores{ $decode{$me} }
+           + $scores{ $result{ $decode{$elf} }{ $decode{$me} } };
 }
 say $score;
 
