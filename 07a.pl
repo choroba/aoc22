@@ -5,52 +5,25 @@ use feature qw{ say };
 
 use ARGV::OrDATA;
 
-my @cwd;
-my %fs = ('/' => {});
-
-sub set {
-    my ($dir, $size, @path) = @_;
-    if (@path > 1) {
-        my $first = shift @path;
-        set($dir->{$first}, $size, @path);
-    } elsif (! exists $dir->{ $path[0] }) {
-        $dir->{ $path[0] } = $size;
-    }
-}
-
-my %size;
-sub size {
-    my ($dir, $path) = @_;
-    my $size = 0;
-    for my $file (keys %$dir) {
-        if (ref $dir->{$file}) {
-            $size += size($dir->{$file}, "$path/$file");
-        } else {
-            $size += $dir->{$file};
-        }
-    }
-    $size{$path} = $size;
-}
+my @cwd = ("");
+my %dirsize;
 
 while (<>) {
     chomp;
     if (m{^\$ cd \.\.$}) {
-        pop @cwd;
+        pop @cwd if @cwd > 1;
     } elsif (m{^\$ cd /$}) {
-        @cwd = ();
+        @cwd = ("");
     } elsif (m{^\$ cd (.+)}) {
         push @cwd, $1;
-        set($fs{'/'}, {}, @cwd);
-    } elsif (/^dir (.+)/) {
     } elsif (/^([0-9]+) (.+)/) {
-        set($fs{'/'}, $1, @cwd, $2);
+        my ($size, $name) = ($1, $2);
+        $dirsize{ join '/', @cwd[0 .. $_] } += $size for 0 .. $#cwd;
     }
 }
 
-size(\%fs, "");
-delete $size{""};
 my $sum = 0;
-for my $size (values %size) {
+for my $size (values %dirsize) {
     $sum += $size if $size <= 100_000;
 }
 say $sum;
