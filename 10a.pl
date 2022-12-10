@@ -9,7 +9,6 @@ my %ticks = (
     addx => 2,
     noop => 1);
 
-
 my ($x, $tick) = (1, 1);
 my $strength = 0;
 while (my $line = <>) {

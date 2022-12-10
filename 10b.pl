@@ -9,7 +9,6 @@ my %ticks = (
     addx => 2,
     noop => 1);
 
-
 my ($x, $tick) = (1, 1);
 while (my $line = <>) {
     my ($instruction, $param) = split ' ', $line;
@@ -27,6 +26,7 @@ while (my $line = <>) {
         die "Unknown instruction: $instruction.\n";
     }
 }
+print "\n";
 
 __DATA__
 addx 15
