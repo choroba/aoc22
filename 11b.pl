@@ -6,6 +6,7 @@ use feature qw{ say };
 use ARGV::OrDATA;
 
 my @monkeys;
+my $product = 1;
 
 while (<>) {
     if (/^Monkey [0-9]+:/) {
@@ -19,6 +20,7 @@ while (<>) {
 
     } elsif (/Test: divisible by ([0-9]+)/) {
         $monkeys[-1]{test} = $1;
+        $product *= $1;
 
     } elsif (/If (true|false): throw to monkey ([0-9]+)/) {
         $monkeys[-1]{$1} = $2;
@@ -28,11 +30,7 @@ while (<>) {
     }
 }
 
-my $product = 1;
-$product *= $_->{test} for @monkeys;
-
 for my $round (1 .. 10_000) {
-    print STDERR "$round\r";
     for my $monkey (@monkeys) {
         while (@{ $monkey->{items} }) {
             ++$monkey->{active};
