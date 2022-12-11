@@ -19,5 +19,5 @@ with open(sys.argv[1], 'r') as fh:
         if 'addx' == instruction:
             x += int(param)
         elif 'noop' != instruction:
-            raise f'Unknown instruction {instruction}'
+            raise Exception(f'Unknown instruction {instruction}')
 print()
